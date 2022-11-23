@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+
+        php:
+            build:
+                context: symfony
+                args:
+                    SYMFONY_VERSION: ${SYMFONY_VERSION:-}
+                    STABILITY: ${STABILITY:-stable}
+            restart: unless-stopped
+            healthcheck:
+                interval: 10s
+                timeout: 3s
+                retries: 3
+                start_period: 30s
+
+
+        db:
+            image: mysql
+            container_name: db_docker_symfony
+            restart: always
+            volumes:
+                - db-data:/var/lib/mysql
+            environment:
+                MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+
+volumes:
+  db-data: 
+  
